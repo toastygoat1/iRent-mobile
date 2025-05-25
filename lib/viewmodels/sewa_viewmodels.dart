@@ -1,0 +1,1 @@
+// isinya nanti menyimpan data sewa dan statusnya. (masih kurang ngerti bedanya sama sewa.dart)

@@ -1,0 +1,1 @@
+// isinya nanti data penyewaan (tanggal, durasi, status)

@@ -1,0 +1,1 @@
+// isinya atribut iphone seperti nama, harga, deskripsi, gambar, dll.
