@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
 import '../widgets/main_bottom_nav.dart';
+import '../models/iphones.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final items = List.generate(8, (index) => {
-      'image': 'https://images.tokopedia.net/img/cache/900/VqbcmM/2022/10/28/ba2f9780-c4bc-4f77-a5a4-ce06590eb17e.jpg',
-      'title': 'iPhone 14 Pro Midnight Super Super Super Super Long Title  $index',
-      'price': 'Rp100.000'
-    });
+    final items = iphones;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -50,9 +47,9 @@ class HomePage extends StatelessWidget {
           crossAxisSpacing: 8,
           childAspectRatio: 0.75,
           children: items.map((item) => ProductCard(
-            imageUrl: item['image']!,
-            title: item['title']!,
-            price: item['price']!,
+            imageUrl: item.imageUrl,
+            title: item.title,
+            price: item.price,
           )).toList(),
         ),
       ),
