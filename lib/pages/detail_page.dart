@@ -11,13 +11,63 @@ class DetailPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Roboto',
       ),
-      home: ProductDetailPage(),
+      home: MainMenuPage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class ProductDetailPage extends StatelessWidget {
+class MainMenuPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        // Ketika tombol back system ditekan, kembali ke menu utama
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainMenuPage()),
+              (route) => false,
+        );
+        return false; // Mencegah pop default
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Menu Utama'),
+          backgroundColor: Colors.blue,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Halaman Menu Utama',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProductDetailPage()),
+                  );
+                },
+                child: Text('Lihat Detail Produk iPhone'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductDetailPage extends StatefulWidget {
+  @override
+  _ProductDetailPageState createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  bool _isExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +87,14 @@ class ProductDetailPage extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      // Ketika tombol back app ditekan, kembali ke menu utama
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainMenuPage()),
+                            (route) => false,
+                      );
+                    },
                     child: Icon(
                       Icons.arrow_back,
                       size: 24,
@@ -46,31 +103,22 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                   Spacer(),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      // Aksi ketika tombol pesan ditekan
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Fitur pesan akan segera hadir!')),
+                      );
+                    },
                     child: Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            'RP',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        Icons.message,
+                        size: 20,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -220,29 +268,9 @@ class ProductDetailPage extends StatelessWidget {
                   SizedBox(height: 15),
 
                   Text(
-                    'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      height: 1.5,
-                    ),
-                  ),
-
-                  SizedBox(height: 15),
-
-                  Text(
-                    'Link Aksesoris iPhone : https://www.tokopedia.com/studioponsel/etalase/iphone-accessories',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      height: 1.5,
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-
-                  Text(
-                    'Review pelanggan STUDIO PONSEL : https://www.tokopedia.com/studioponsel/review',
+                    _isExpanded
+                        ? 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\nLink Aksesoris iPhone : https://www.tokopedia.com/studioponsel/etalase/iphone-accessories\n\nReview pelanggan STUDIO PONSEL : https://www.tokopedia.com/studioponsel/review\n\nSekilas info tentang kami:\n1. Brand new - Original - Segel\n2. Garansi resmi dari distributor\n3. Sudah termasuk dus, charger, dan aksesoris standar\n4. Pengiriman aman dengan bubble wrap dan dus tambahan\n5. Tersedia berbagai pilihan warna\n6. Stock selalu ready dan update\n7. Pelayanan customer service 24/7\n8. Proses pengiriman cepat dan terpercaya'
+                        : 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black87,
@@ -253,9 +281,13 @@ class ProductDetailPage extends StatelessWidget {
                   SizedBox(height: 15),
 
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        _isExpanded = !_isExpanded;
+                      });
+                    },
                     child: Text(
-                      'Baca Selengkapnya',
+                      _isExpanded ? 'Baca Lebih Sedikit' : 'Baca Selengkapnya',
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.green,
