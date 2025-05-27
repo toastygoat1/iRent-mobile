@@ -18,13 +18,13 @@ class HomePage extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                height: 40,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey, width: 1),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal:4),
                 child: Row(
                   children: const [
                     Icon(Icons.search, color: Colors.grey),
