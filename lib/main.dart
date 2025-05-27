@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'pages/pop_up.dart';
 
 
 void main() {
@@ -75,6 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
+  void _goToPopUpPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PopUpPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _goToHomePage,
               child: const Text('Go to Homepage'),
+            ),
+            ElevatedButton(
+              onPressed: _goToPopUpPage,
+              child: const Text('Go to PopUp Page'),
             ),
           ],
         ),
