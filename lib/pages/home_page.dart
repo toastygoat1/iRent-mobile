@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
 import '../widgets/main_bottom_nav.dart';
 import '../models/iphones.dart';
+import 'pop_up.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -46,10 +47,20 @@ class HomePage extends StatelessWidget {
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 0.75,
-          children: items.map((item) => ProductCard(
-            imageUrl: item.imageUrl,
-            title: item.title,
-            price: item.price,
+          children: items.map((item) => GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PopUpPage(iphone: item),
+                ),
+              );
+            },
+            child: ProductCard(
+              imageUrl: item.imageUrl,
+              title: item.title,
+              price: item.price,
+            ),
           )).toList(),
         ),
       ),
