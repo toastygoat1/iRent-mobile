@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
-import '../widgets/homepage_bottomnav.dart';
+import '../widgets/main_bottom_nav.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,8 +14,33 @@ class HomePage extends StatelessWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nanti ini gak ada y'),
-        actions: const [Icon(Icons.chat_rounded)],
+        title: Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey, width: 1),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: const [
+                    Icon(Icons.search, color: Colors.grey),
+                    SizedBox(width: 8),
+                    Text(
+                      'Search',
+                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            const Icon(Icons.chat_rounded),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
