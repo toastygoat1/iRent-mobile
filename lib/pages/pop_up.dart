@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/iphones.dart';
+import 'package:intl/intl.dart';
 
 class PopUpPage extends StatefulWidget {
   final Iphone iphone;
@@ -16,6 +17,7 @@ class _PopUpPageState extends State<PopUpPage> {
   Future<void> _showBottomSheet(BuildContext context) async {
     int counter = _counter;
     int selectedColor = _selectedColor;
+    final storageList = widget.iphone.storagePrices.keys.toList();
     final result = await showModalBottomSheet<Map<String, int>>(
       context: context,
       isScrollControlled: true,
@@ -29,6 +31,9 @@ class _PopUpPageState extends State<PopUpPage> {
             padding: const EdgeInsets.all(16.0),
             child: StatefulBuilder(
               builder: (context, setModalState) {
+                final selectedStorage = storageList[selectedColor];
+                final price = widget.iphone.storagePrices[selectedStorage];
+                final formattedPrice = 'Rp ${NumberFormat('#,###', 'id_ID').format(price)}';
                 return WillPopScope(
                   onWillPop: () async {
                     Navigator.pop(context, {
@@ -55,7 +60,7 @@ class _PopUpPageState extends State<PopUpPage> {
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              widget.iphone.price,
+                              formattedPrice,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -65,12 +70,12 @@ class _PopUpPageState extends State<PopUpPage> {
                       const Text('Ukuran Penyimpanan:', style: TextStyle(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Row(
-                        children: List.generate(widget.iphone.storageVariants.length, (index) {
+                        children: List.generate(storageList.length, (index) {
                           final isSelected = selectedColor == index;
                           return Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ChoiceChip(
-                              label: Text(widget.iphone.storageVariants[index]),
+                              label: Text(storageList[index]),
                               selected: isSelected,
                               onSelected: (_) {
                                 setModalState(() {
