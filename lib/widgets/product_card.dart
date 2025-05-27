@@ -44,7 +44,7 @@ class ProductCard extends StatelessWidget {
               price,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.black54, fontSize: 18, fontWeight: FontWeight.w600),
+              style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
             ),
           ),
         ],
