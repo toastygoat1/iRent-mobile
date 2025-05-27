@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            const Icon(Icons.chat_rounded),
+            const Icon(Icons.chat_bubble_outline_rounded, color: Colors.grey, size: 28),
           ],
         ),
       ),
