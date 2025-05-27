@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
-import 'models/iphones.dart'; //
+import 'models/iphones.dart';
 
-final items = iphones; // Use your iphones list
+final items = iphones;
 
 void main() {
   runApp(const MyApp());
