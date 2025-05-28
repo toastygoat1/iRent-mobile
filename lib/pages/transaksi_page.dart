@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import '../models/iphones.dart';
 import '../viewmodels/sewa_viewmodels.dart';
 import '../widgets/main_bottom_nav.dart';
@@ -12,7 +12,10 @@ class TransactionPage extends StatelessWidget {
     final transactions = Provider.of<TransactionProvider>(context).transactions;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Transaksi')),
+      appBar: AppBar(
+          title: const Text('Daftar Transaksi'),
+          automaticallyImplyLeading: false,
+      ),
         body: ListView.builder(
           itemCount: transactions.length,
           itemBuilder: (context, index) {
