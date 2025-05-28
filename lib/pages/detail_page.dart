@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/iphones.dart';
 import 'pop_up.dart';
 
@@ -56,7 +57,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context); // kembali ke halaman sebelumnya
+                      Navigator.pop(context);
                     },
                     child: const Icon(
                       Icons.arrow_back,
@@ -68,7 +69,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   GestureDetector(
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Fitur pesan akan segera hadir!')),
+                        const SnackBar(
+                          content: Text('Fitur pesan akan segera hadir!'),
+                        ),
                       );
                     },
                     child: Container(
@@ -102,18 +105,25 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Center(
                       child: Image.network(
                         iphone.imageUrl,
-                        height: 250,
+                        height: 275,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.phone_iphone, size: 80, color: Colors.grey[400]),
+                              Icon(
+                                Icons.phone_iphone,
+                                size: 80,
+                                color: Colors.grey[400],
+                              ),
                               const SizedBox(height: 10),
                               Text(
                                 '${iphone.title}\n${iphone.storagePrices.keys.join(' ')}',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.grey[600],
+                                ),
                               ),
                               const SizedBox(height: 10),
                               Row(
@@ -154,11 +164,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${iphone.title} $_selectedStorage',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                    ),
+                    iphone.title,
+                    style: const TextStyle(fontSize: 16, color: Colors.black87),
                   ),
                 ],
               ),
@@ -170,23 +177,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Detail produk',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  _buildDetailRow('Status Sinyal', 'Sinyal Aktif'),
-                  _buildDetailRow('Tahun Rilis', _getYearFromModel(iphone.title)),
-                  _buildDetailRow('Tipe Garansi', 'Garansi Distributor'),
-                  _buildDetailRow('Etalase', 'New FS', valueColor: Color(0xFF0088CC)),
-
-                  const SizedBox(height: 30),
-
                   const Text(
                     'Deskripsi produk',
                     style: TextStyle(
@@ -235,7 +225,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   context: context,
                   isScrollControlled: true,
                   shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                   ),
                   builder: (context) => PopUpPage(iphone: iphone),
                 );
@@ -250,10 +242,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
               child: const Text(
                 'ORDER',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -270,10 +259,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.grey[300]!,
-          width: 1,
-        ),
+        border: Border.all(color: Colors.grey[300]!, width: 1),
       ),
     );
   }
@@ -297,7 +283,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               style: TextStyle(
                 fontSize: 14,
                 color: valueColor ?? Colors.black87,
-                fontWeight: valueColor != null ? FontWeight.w500 : FontWeight.normal,
+                fontWeight: valueColor != null
+                    ? FontWeight.w500
+                    : FontWeight.normal,
               ),
             ),
           ),
@@ -323,16 +311,41 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('• ', style: TextStyle(fontSize: 14, color: Colors.black87)),
-            Expanded(child: Text(trimmed.substring(1).trim(), style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.5))),
+            const Text(
+              '• ',
+              style: TextStyle(fontSize: 14, color: Colors.black87),
+            ),
+            Expanded(
+              child: Text(
+                trimmed.substring(1).trim(),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                  height: 1.5,
+                ),
+              ),
+            ),
           ],
         );
       } else if (trimmed.startsWith('Cocok Untuk:')) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('• ', style: TextStyle(fontSize: 14, color: Colors.black87)),
-            Expanded(child: Text(trimmed, style: const TextStyle(fontSize: 14, color: Colors.black87, fontWeight: FontWeight.bold, height: 1.5))),
+            const Text(
+              '• ',
+              style: TextStyle(fontSize: 14, color: Colors.black87),
+            ),
+            Expanded(
+              child: Text(
+                trimmed,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  height: 1.5,
+                ),
+              ),
+            ),
           ],
         );
       } else if (trimmed.isEmpty) {
@@ -340,7 +353,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       } else {
         return Padding(
           padding: const EdgeInsets.only(bottom: 2),
-          child: Text(trimmed, style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.5)),
+          child: Text(
+            trimmed,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+              height: 1.5,
+            ),
+          ),
         );
       }
     }).toList();
