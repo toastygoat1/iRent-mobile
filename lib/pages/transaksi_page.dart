@@ -34,7 +34,13 @@ class TransactionPage extends StatelessWidget {
             );
           },
         ),
-      );
+      bottomNavigationBar: MainBottomNav(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle navigation here
+        },
+      ),
+    );
   }
 }
 
