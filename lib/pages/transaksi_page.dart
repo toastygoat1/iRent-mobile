@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/iphones.dart';
 import '../viewmodels/sewa_viewmodels.dart';
+import '../widgets/main_bottom_nav.dart';
 
 class TransactionPage extends StatelessWidget {
   const TransactionPage({super.key});
@@ -30,6 +31,12 @@ class TransactionPage extends StatelessWidget {
             );
           },
         ),
+      bottomNavigationBar: MainBottomNav(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle navigation here
+        },
+      ),
     );
   }
 }
@@ -170,3 +177,5 @@ class ShoppingCartItem extends StatelessWidget {
     );
   }
 }
+
+
