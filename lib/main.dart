@@ -96,13 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _goToTransactionPage() {
+  /*void _goToTransactionPage() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TransactionPage(),
       ),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +160,11 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to Detail Page'),
 
             ),
-            ElevatedButton(
+            /*ElevatedButton(
               onPressed: _goToTransactionPage,
               child: const Text('Go to Transaction Page'),
 
-            ),
+            ),*/
           ],
         ),
       ),

@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import '../models/iphones.dart';
 
 class TransactionPage extends StatelessWidget {
-  const TransactionPage({super.key});
+  final String selectedColor;
+  final int counter;
+  final Iphone iphone;
+
+  const TransactionPage({
+    Key? key,
+    required this.selectedColor,
+    required this.counter,
+    required this.iphone,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final pricePerDay = iphone.storagePrices[selectedColor]!;
+    final totalPrice = pricePerDay * counter;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text('Belanja'),
+        title: Text('Transaksi'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 1,
@@ -17,43 +30,30 @@ class TransactionPage extends StatelessWidget {
         padding: EdgeInsets.all(16),
         children: [
           ShoppingCartItem(
-            date: '15 Jun 2024',
-            productName: 'MOVIO Stand Headphone Headset - Te...',
-            quantity: 1,
-            totalPrice: 35200,
-            status: 'Selesai',
+            date: _formatTodayDate(),
+            productName: '${iphone.title} ($selectedColor)',
+            quantity: counter,
+            totalPrice: totalPrice,
+            status: 'Diproses',
             showReviewButton: false,
-          ),
-          SizedBox(height: 12),
-          ShoppingCartItem(
-            date: '14 Jun 2024',
-            productName: 'Kain Lap Microfiber 40x40 320GSM Mic...',
-            quantity: 1,
-            totalPrice: 22500,
-            status: 'Selesai',
-            showReviewButton: true,
-          ),
-          SizedBox(height: 12),
-          ShoppingCartItem(
-            date: '12 Jun 2024',
-            productName: 'ORICO USB HUB 4 Port MH4U-U3 Trans...',
-            quantity: 1,
-            totalPrice: 195550,
-            status: 'Selesai',
-            showReviewButton: true,
-          ),
-          SizedBox(height: 12),
-          ShoppingCartItem(
-            date: '12 Jun 2024',
-            productName: 'ALKOHOL ISOPROPYL 99% 1 LITER / ISO...',
-            quantity: 1,
-            totalPrice: 35300,
-            status: 'Selesai',
-            showReviewButton: true,
+            imageUrl: iphone.imageUrl,
           ),
         ],
       ),
     );
+  }
+
+  String _formatTodayDate() {
+    final now = DateTime.now();
+    return '${now.day} ${_getMonthName(now.month)} ${now.year}';
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    ];
+    return months[month];
   }
 }
 
@@ -64,6 +64,7 @@ class ShoppingCartItem extends StatelessWidget {
   final int totalPrice;
   final String status;
   final bool showReviewButton;
+  final String imageUrl;
 
   const ShoppingCartItem({
     Key? key,
@@ -73,6 +74,7 @@ class ShoppingCartItem extends StatelessWidget {
     required this.totalPrice,
     required this.status,
     required this.showReviewButton,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -80,7 +82,7 @@ class ShoppingCartItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -95,59 +97,29 @@ class ShoppingCartItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header with shop icon, name and status
+            // Header
             Row(
               children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Icon(
-                    Icons.shopping_bag,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                ),
+                Icon(Icons.shopping_bag, color: Colors.blue),
                 SizedBox(width: 8),
-                Text(
-                  'Belanja',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
+                Text('Belanja', style: TextStyle(fontWeight: FontWeight.w600)),
                 SizedBox(width: 8),
-                Text(
-                  date,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
+                Text(date, style: TextStyle(color: Colors.grey[600])),
                 Spacer(),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green[100],
+                    color: Colors.orange[100],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     status,
                     style: TextStyle(
-                      color: Colors.green[700],
+                      color: Colors.black,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                ),
-                SizedBox(width: 8),
-                Icon(
-                  Icons.more_vert,
-                  color: Colors.grey[600],
-                  size: 20,
                 ),
               ],
             ),
@@ -157,24 +129,13 @@ class ShoppingCartItem extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product image placeholder
-                Container(
+                Image.network(
+                  imageUrl,
                   width: 60,
                   height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey[300]!),
-                  ),
-                  child: Icon(
-                    Icons.image,
-                    color: Colors.grey[400],
-                    size: 30,
-                  ),
+                  fit: BoxFit.cover,
                 ),
                 SizedBox(width: 12),
-
-                // Product info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,106 +146,38 @@ class ShoppingCartItem extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: 4),
-                      Text(
-                        '$quantity barang',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ),
+                      Text('Durasi: $quantity hari'),
                     ],
                   ),
                 ),
               ],
             ),
-
-            // Additional products indicator
-            if (productName.contains('MOVIO'))
-              Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: Text(
-                  '+1 produk lainnya',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-
             SizedBox(height: 16),
 
-            // Price and buttons
+            // Price and summary
             Row(
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Total Belanja',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
+                      'Total Harga',
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     Text(
                       'Rp ${_formatPrice(totalPrice)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 ),
                 Spacer(),
-
-                // Action buttons
-                Row(
-                  children: [
-                    if (showReviewButton) ...[
-                      OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.green),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        ),
-                        child: Text(
-                          'Ulas',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                    ],
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      ),
-                      child: Text(
-                        'Beli Lagi',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                if (showReviewButton)
+                  TextButton(
+                    onPressed: () {},
+                    child: Text('Review'),
+                  ),
               ],
             ),
           ],

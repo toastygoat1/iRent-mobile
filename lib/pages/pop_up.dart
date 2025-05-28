@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/iphones.dart';
 import 'package:intl/intl.dart';
+import 'transaksi_page.dart';
 
 class PopUpPage extends StatefulWidget {
   final Iphone iphone;
@@ -137,11 +138,19 @@ class _PopUpPageState extends State<PopUpPage> {
                                 ),
                               );
                               if (confirm == true) {
-                                Navigator.pop(context, {
-                                  'counter': counter,
-                                  'selectedColor': selectedColor,
-                                });
+                                final selectedStorage = widget.iphone.storagePrices.keys.toList()[selectedColor];
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TransactionPage(
+                                      selectedColor: selectedStorage,
+                                      counter: counter,
+                                      iphone: widget.iphone,
+                                    ),
+                                  ),
+                                );
                               }
+
                             },
                             child: const Text('OK'),
                           ),
