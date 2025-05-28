@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _goToDetailPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DetailPage(),
+      MaterialPageRoute(builder: (context) => DetailPage(iphone: items[0],),
       ),
     );
   }

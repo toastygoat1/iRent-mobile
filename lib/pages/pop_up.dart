@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/iphones.dart';
 import 'package:intl/intl.dart';
 
+import 'confirmation_page.dart';
+
 class PopUpPage extends StatefulWidget {
   final Iphone iphone;
   const PopUpPage({super.key, required this.iphone});
@@ -101,30 +103,22 @@ class _PopUpPageState extends State<PopUpPage> {
                     child: const Text('Cancel'),
                   ),
                   TextButton(
-                    onPressed: () async {
-                      final confirm = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Konfirmasi'),
-                          content: const Text('Apakah Anda yakin dengan pilihan ini?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Tidak'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Ya'),
-                            ),
-                          ],
+                    onPressed: () {
+                      Navigator.pop(context); // Tutup PopUpPage dulu
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmationPage(
+                            iphone: widget.iphone,
+                            selectedStorage: selectedStorage,
+                            duration: _counter,
+                          ),
                         ),
                       );
-                      if (confirm == true) {
-                        Navigator.pop(context);
-                      }
                     },
                     child: const Text('OK'),
                   ),
+
                 ],
               ),
             ],
