@@ -5,6 +5,7 @@ class Transaction {
   final int totalPrice;
   final String date;
   final String status;
+  final String imageUrl; // tambahkan ini
 
   Transaction({
     required this.productName,
@@ -12,5 +13,7 @@ class Transaction {
     required this.totalPrice,
     required this.date,
     required this.status,
+    required this.imageUrl,
   });
 }
+

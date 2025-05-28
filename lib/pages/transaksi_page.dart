@@ -1,59 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/iphones.dart';
+import '../viewmodels/sewa_viewmodels.dart';
 
 class TransactionPage extends StatelessWidget {
-  final String selectedColor;
-  final int counter;
-  final Iphone iphone;
-
-  const TransactionPage({
-    Key? key,
-    required this.selectedColor,
-    required this.counter,
-    required this.iphone,
-  }) : super(key: key);
+  const TransactionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pricePerDay = iphone.storagePrices[selectedColor]!;
-    final totalPrice = pricePerDay * counter;
+    final transactions = Provider.of<TransactionProvider>(context).transactions;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: Text('Transaksi'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16),
-        children: [
-          ShoppingCartItem(
-            date: _formatTodayDate(),
-            productName: '${iphone.title} ($selectedColor)',
-            quantity: counter,
-            totalPrice: totalPrice,
-            status: 'Diproses',
-            showReviewButton: false,
-            imageUrl: iphone.imageUrl,
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Daftar Transaksi')),
+        body: ListView.builder(
+          itemCount: transactions.length,
+          itemBuilder: (context, index) {
+            final t = transactions[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: ShoppingCartItem(
+                date: t.date,
+                productName: t.productName,
+                quantity: t.quantity,
+                totalPrice: t.totalPrice,
+                status: t.status,
+                showReviewButton: false, // bisa true jika ingin aktifkan tombol review
+                imageUrl: t.imageUrl ?? '', // pastikan kamu tambahkan imageUrl di Transaction model
+              ),
+            );
+          },
+        ),
     );
-  }
-
-  String _formatTodayDate() {
-    final now = DateTime.now();
-    return '${now.day} ${_getMonthName(now.month)} ${now.year}';
-  }
-
-  String _getMonthName(int month) {
-    const months = [
-      '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-    ];
-    return months[month];
   }
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irent/pages/detail_page.dart';
+import 'package:irent/viewmodels/sewa_viewmodels.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
 import 'models/iphones.dart';
@@ -8,7 +10,15 @@ import 'pages/transaksi_page.dart';
 final items = iphones;
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TransactionProvider()),
+        // Tambahkan provider lain di sini kalau ada
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -96,13 +106,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /*void _goToTransactionPage() {
+  void _goToTransactionPage() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TransactionPage(),
       ),
     );
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +170,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: const Text('Go to Detail Page'),
 
             ),
-            /*ElevatedButton(
+            ElevatedButton(
               onPressed: _goToTransactionPage,
               child: const Text('Go to Transaction Page'),
 
-            ),*/
+            ),
+
           ],
         ),
       ),

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/iphones.dart';
 import 'package:intl/intl.dart';
+import '../models/sewa.dart';
+import '../viewmodels/sewa_viewmodels.dart';
+import 'confirmation_page.dart';
 import 'transaksi_page.dart';
+import 'package:irent/utils/date_utils.dart';
 
 class PopUpPage extends StatefulWidget {
   final Iphone iphone;
@@ -119,38 +124,17 @@ class _PopUpPageState extends State<PopUpPage> {
                             child: const Text('Cancel'),
                           ),
                           TextButton(
-                            onPressed: () async {
-                              final confirm = await showDialog<bool>(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Konfirmasi'),
-                                  content: const Text('Apakah Anda yakin dengan pilihan ini?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context, false),
-                                      child: const Text('Tidak'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context, true),
-                                      child: const Text('Ya'),
-                                    ),
-                                  ],
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ConfirmationPage(
+                                    iphone: widget.iphone,
+                                    selectedStorage: selectedStorage,
+                                    duration: counter,
+                                  ),
                                 ),
                               );
-                              if (confirm == true) {
-                                final selectedStorage = widget.iphone.storagePrices.keys.toList()[selectedColor];
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TransactionPage(
-                                      selectedColor: selectedStorage,
-                                      counter: counter,
-                                      iphone: widget.iphone,
-                                    ),
-                                  ),
-                                );
-                              }
-
                             },
                             child: const Text('OK'),
                           ),
