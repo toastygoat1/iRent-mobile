@@ -19,10 +19,18 @@ class ConfirmationPage extends StatelessWidget {
     required this.duration,
   });
 
+  double _calculateTotalPrice(int pricePerDay, int duration) {
+    double total = 0;
+    for (int i = 0; i < duration; i++) {
+      total += pricePerDay * (1 + 0.05 * i);
+    }
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
     final pricePerDay = iphone.storagePrices[selectedStorage]!;
-    final totalPrice = pricePerDay * duration;
+    final totalPrice = _calculateTotalPrice(pricePerDay, duration);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Konfirmasi Pesanan')),
@@ -71,7 +79,7 @@ class ConfirmationPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Total Harga', style: TextStyle(fontSize: 16)),
-                  Text('Rp ${_formatPrice(totalPrice)}',
+                  Text('Rp ${_formatPrice(totalPrice.round())}',
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 ],
               ),
@@ -113,7 +121,7 @@ class ConfirmationPage extends StatelessWidget {
                             Transaction(
                               productName: iphone.title,
                               quantity: duration,
-                              totalPrice: totalPrice,
+                              totalPrice: totalPrice.round(),
                               date: getTodayDate(),
                               status: 'Selesai',
                               imageUrl: iphone.imageUrl,
