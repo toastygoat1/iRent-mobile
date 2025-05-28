@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:irent/pages/detail_page.dart';
 import 'package:irent/viewmodels/sewa_viewmodels.dart';
 import 'package:provider/provider.dart';
+
+import 'models/iphones.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
-import 'models/iphones.dart';
 import 'pages/transaksi_page.dart';
 
 final items = iphones;
@@ -91,26 +92,25 @@ class _MyHomePageState extends State<MyHomePage> {
       MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
+
   void _goToPopUpPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PopUpPage(iphone: items[0]),
-      ),
+      MaterialPageRoute(builder: (context) => PopUpPage(iphone: items[0])),
     );
   }
+
   void _goToDetailPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DetailPage(),
-      ),
+      MaterialPageRoute(builder: (context) => DetailPage(iphone: items[0])),
     );
   }
 
   void _goToTransactionPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TransactionPage(),
-      ),
+      MaterialPageRoute(builder: (context) => TransactionPage()),
     );
   }
 
@@ -168,14 +168,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _goToDetailPage,
               child: const Text('Go to Detail Page'),
-
             ),
             ElevatedButton(
               onPressed: _goToTransactionPage,
               child: const Text('Go to Transaction Page'),
-
             ),
-
           ],
         ),
       ),
