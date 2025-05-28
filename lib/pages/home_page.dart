@@ -4,6 +4,8 @@ import '../widgets/main_bottom_nav.dart';
 import '../models/iphones.dart';
 import 'pop_up.dart';
 import 'package:intl/intl.dart';
+import '../models/iphones.dart';
+import 'detail_page.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => PopUpPage(iphone: item),
+                  builder: (context) => const DetailPage(),
                 ),
               );
             },
