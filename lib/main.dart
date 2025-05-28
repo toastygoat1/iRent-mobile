@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:irent/pages/detail_page.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
 import 'models/iphones.dart';
@@ -86,6 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+  void _goToDetailPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DetailPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _goToPopUpPage,
               child: const Text('Go to PopUp Page'),
+            ),
+            ElevatedButton(
+              onPressed: _goToDetailPage,
+              child: const Text('Go to Detail Page'),
             ),
           ],
         ),
