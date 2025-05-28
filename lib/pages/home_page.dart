@@ -65,6 +65,12 @@ class HomePage extends StatelessWidget {
           )).toList(),
         ),
       ),
+      bottomNavigationBar: MainBottomNav(
+        currentIndex: 0,
+        onTap: (index) {
+          // Handle navigation here
+        },
+      ),
     );
   }
 }
