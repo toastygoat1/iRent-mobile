@@ -35,11 +35,18 @@ class TransactionPage extends StatelessWidget {
           },
         ),
       bottomNavigationBar: MainBottomNav(
-        currentIndex: 0,
+        currentIndex: 1, // karena ini halaman transaksi
         onTap: (index) {
-          // Handle navigation here
+          if (index == 0) {
+            Navigator.pushNamed(context, '/');
+          } else if (index == 1) {
+            // sedang di halaman transaksi, tidak perlu pindah
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/profile');
+          }
         },
       ),
+
     );
   }
 }

@@ -68,9 +68,16 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: MainBottomNav(
         currentIndex: 0,
         onTap: (index) {
-          // Handle navigation here
+          if (index == 0) {
+            // Sudah di Home, tidak perlu pindah
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/transactions');
+          } else if (index == 2) {
+            Navigator.pushNamed(context, '/profile');
+          }
         },
       ),
+
     );
   }
 }

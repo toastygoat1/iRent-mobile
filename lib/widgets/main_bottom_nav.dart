@@ -2,33 +2,35 @@ import 'package:flutter/material.dart';
 
 class MainBottomNav extends StatelessWidget {
   final int currentIndex;
-  final ValueChanged<int> onTap;
+  final Function(int) onTap;
 
   const MainBottomNav({
-    super.key,
-    required this.currentIndex,
+    Key? key,
+    this.currentIndex = 0,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.grey,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_rounded),
+          icon: Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.list_alt_rounded),
+          icon: Icon(Icons.receipt_long),
           label: 'Transaksi',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Akun',
+          label: 'Profil',
         ),
       ],
-      currentIndex: currentIndex,
-      onTap: onTap,
     );
   }
 }
