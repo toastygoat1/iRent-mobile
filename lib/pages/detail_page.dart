@@ -197,33 +197,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                   const SizedBox(height: 15),
 
-                  Text(
-                    _isExpanded
-                        ? 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\n${iphone.title} hadir dengan teknologi terdepan dan kualitas premium. Dilengkapi dengan berbagai pilihan kapasitas penyimpanan untuk memenuhi kebutuhan Anda.\n\nKeunggulan ${iphone.title}:\n1. Brand new - Original - Segel\n2. Garansi resmi dari distributor\n3. Sudah termasuk dus, charger, dan aksesoris standar\n4. Pengiriman aman dengan bubble wrap dan dus tambahan\n5. Tersedia berbagai pilihan kapasitas\n6. Stock selalu ready dan update\n7. Pelayanan customer service 24/7\n8. Proses pengiriman cepat dan terpercaya'
-                        : 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\n${iphone.title} hadir dengan teknologi terdepan dan kualitas premium.',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black87,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded;
-                      });
-                    },
-                    child: Text(
-                      _isExpanded ? 'Baca Lebih Sedikit' : 'Baca Selengkapnya',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF0088CC),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  ..._buildDescriptionWithBullets(iphone.description),
                 ],
               ),
             ),
@@ -339,5 +313,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (title.contains('SE (2022)')) return '2022';
     if (title.contains('11')) return '2019';
     return '2023';
+  }
+
+  List<Widget> _buildDescriptionWithBullets(String description) {
+    final lines = description.split('\n');
+    return lines.map((line) {
+      final trimmed = line.trim();
+      if (trimmed.startsWith('-')) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('• ', style: TextStyle(fontSize: 14, color: Colors.black87)),
+            Expanded(child: Text(trimmed.substring(1).trim(), style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.5))),
+          ],
+        );
+      } else if (trimmed.startsWith('Cocok Untuk:')) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('• ', style: TextStyle(fontSize: 14, color: Colors.black87)),
+            Expanded(child: Text(trimmed, style: const TextStyle(fontSize: 14, color: Colors.black87, fontWeight: FontWeight.bold, height: 1.5))),
+          ],
+        );
+      } else if (trimmed.isEmpty) {
+        return const SizedBox(height: 8);
+      } else {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 2),
+          child: Text(trimmed, style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.5)),
+        );
+      }
+    }).toList();
   }
 }
