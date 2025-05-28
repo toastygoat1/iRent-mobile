@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/iphones.dart';
+import 'pop_up.dart';
 
 class DetailPage extends StatelessWidget {
   final Iphone iphone;
@@ -163,56 +164,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             ),
 
-            // Storage Options
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Pilih Kapasitas',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Wrap(
-                    spacing: 10,
-                    children: iphone.storagePrices.keys.map((storage) {
-                      final isSelected = storage == _selectedStorage;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedStorage = storage;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: isSelected ? Color(0xFF0088CC) : Colors.white,
-                            border: Border.all(
-                              color: isSelected ? Color(0xFF0088CC) : Colors.grey[300]!,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            storage,
-                            style: TextStyle(
-                              color: isSelected ? Colors.white : Colors.black87,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-
             // Detail Produk Section
             Padding(
               padding: const EdgeInsets.all(20),
@@ -304,12 +255,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${iphone.title} $_selectedStorage berhasil ditambahkan ke keranjang!'),
-                    backgroundColor: Color(0xFF0088CC),
+              onPressed: () async {
+                // Tampilkan pop up konfirmasi order
+                await showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                   ),
+                  builder: (context) => PopUpPage(iphone: iphone),
                 );
               },
               style: ElevatedButton.styleFrom(
