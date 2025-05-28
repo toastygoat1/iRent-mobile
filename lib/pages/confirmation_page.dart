@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:irent/pages/home_page.dart';
 import 'package:irent/pages/transaksi_page.dart';
 import 'package:provider/provider.dart';
+
 import '../models/iphones.dart';
 import '../models/sewa.dart';
 import '../utils/date_utils.dart';
+import '../utils/price_utils.dart';
 import '../viewmodels/sewa_viewmodels.dart';
 
 class ConfirmationPage extends StatelessWidget {
@@ -19,19 +20,10 @@ class ConfirmationPage extends StatelessWidget {
     required this.duration,
   });
 
-  double _calculateTotalPrice(int pricePerDay, int duration) {
-    double total = 0;
-    for (int i = 0; i < duration; i++) {
-      total += pricePerDay * (1 + 0.05 * i);
-    }
-    return total;
-  }
-
   @override
   Widget build(BuildContext context) {
     final pricePerDay = iphone.storagePrices[selectedStorage]!;
-    final totalPrice = _calculateTotalPrice(pricePerDay, duration);
-
+    final totalPrice = calculateTotalPrice(pricePerDay, duration);
     return Scaffold(
       appBar: AppBar(title: const Text('Konfirmasi Pesanan')),
       body: Padding(
@@ -56,7 +48,13 @@ class ConfirmationPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(iphone.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text(
+                        iphone.title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 8),
                       Text('Penyimpanan: $selectedStorage'),
                       Text('Durasi: $duration hari'),
@@ -79,8 +77,13 @@ class ConfirmationPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Total Harga', style: TextStyle(fontSize: 16)),
-                  Text('Rp ${_formatPrice(totalPrice.round())}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  Text(
+                    'Rp ${_formatPrice(totalPrice.round())}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -96,12 +99,17 @@ class ConfirmationPage extends StatelessWidget {
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.blue),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: const Text(
                         'Batal',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -113,29 +121,40 @@ class ConfirmationPage extends StatelessWidget {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () {
                         // Tambahkan transaksi ke Provider & navigasi
-                        Provider.of<TransactionProvider>(context, listen: false).addTransaction(
-                            Transaction(
-                              productName: iphone.title,
-                              quantity: duration,
-                              totalPrice: totalPrice.round(),
-                              date: getTodayDate(),
-                              status: 'Selesai',
-                              imageUrl: iphone.imageUrl,
-                            ),
+                        Provider.of<TransactionProvider>(
+                          context,
+                          listen: false,
+                        ).addTransaction(
+                          Transaction(
+                            productName: iphone.title,
+                            quantity: duration,
+                            totalPrice: totalPrice.round(),
+                            date: getTodayDate(),
+                            status: 'Selesai',
+                            imageUrl: iphone.imageUrl,
+                          ),
                         );
                         Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (_) => const TransactionPage()),
-                        (route) => false,
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const TransactionPage(),
+                          ),
+                          (route) => false,
                         );
                       },
                       child: const Text(
                         'Pesan Sekarang',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -151,7 +170,7 @@ class ConfirmationPage extends StatelessWidget {
   String _formatPrice(int price) {
     return price.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (m) => '${m[1]}.',
+      (m) => '${m[1]}.',
     );
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import '../models/iphones.dart';
 import 'package:intl/intl.dart';
 
+import '../models/iphones.dart';
+import '../utils/price_utils.dart';
 import 'confirmation_page.dart';
 
 class PopUpPage extends StatefulWidget {
   final Iphone iphone;
+
   const PopUpPage({super.key, required this.iphone});
 
   @override
@@ -21,9 +23,10 @@ class _PopUpPageState extends State<PopUpPage> {
     final storageList = widget.iphone.storagePrices.keys.toList();
     final selectedStorage = storageList[_selectedColor];
     final price = widget.iphone.storagePrices[selectedStorage]!;
-    final totalPrice = price * _counter;
+    final totalPrice = calculateTotalPrice(price, _counter);
     final formattedPrice = 'Rp ${NumberFormat('#,###', 'id_ID').format(price)}';
-    final formattedTotal = 'Rp ${NumberFormat('#,###', 'id_ID').format(totalPrice)}';
+    final formattedTotal =
+        'Rp ${NumberFormat('#,###', 'id_ID').format(totalPrice.round())}';
 
     return FractionallySizedBox(
       heightFactor: 0.70,
@@ -49,13 +52,19 @@ class _PopUpPageState extends State<PopUpPage> {
                     const SizedBox(height: 12),
                     Text(
                       formattedPrice,
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 24),
-              const Text('Ukuran Penyimpanan:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'Ukuran Penyimpanan:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Row(
                 children: List.generate(storageList.length, (index) {
@@ -75,13 +84,18 @@ class _PopUpPageState extends State<PopUpPage> {
                 }),
               ),
               const SizedBox(height: 24),
-              const Text('Durasi Sewa (Hari):', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'Durasi Sewa (Hari):',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   IconButton(
                     icon: const Icon(Icons.remove),
-                    onPressed: _counter > 1 ? () => setState(() => _counter--) : null,
+                    onPressed: _counter > 1
+                        ? () => setState(() => _counter--)
+                        : null,
                   ),
                   Text('$_counter', style: const TextStyle(fontSize: 18)),
                   IconButton(
@@ -91,7 +105,13 @@ class _PopUpPageState extends State<PopUpPage> {
                 ],
               ),
               const SizedBox(height: 32),
-              Text('Total: $formattedTotal', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              Text(
+                'Total: $formattedTotal',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -118,7 +138,6 @@ class _PopUpPageState extends State<PopUpPage> {
                     },
                     child: const Text('OK'),
                   ),
-
                 ],
               ),
             ],
