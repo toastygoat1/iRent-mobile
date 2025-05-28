@@ -1,6 +1,6 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import '../models/iphones.dart';
+import 'package:provider/provider.dart';
+
 import '../viewmodels/sewa_viewmodels.dart';
 import '../widgets/main_bottom_nav.dart';
 
@@ -13,27 +13,30 @@ class TransactionPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Daftar Transaksi'),
-          automaticallyImplyLeading: false,
+        title: const Text('Daftar Transaksi'),
+        automaticallyImplyLeading: false,
       ),
-        body: ListView.builder(
-          itemCount: transactions.length,
-          itemBuilder: (context, index) {
-            final t = transactions[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ShoppingCartItem(
-                date: t.date,
-                productName: t.productName,
-                quantity: t.quantity,
-                totalPrice: t.totalPrice,
-                status: t.status,
-                showReviewButton: false, // bisa true jika ingin aktifkan tombol review
-                imageUrl: t.imageUrl ?? '', // pastikan kamu tambahkan imageUrl di Transaction model
-              ),
-            );
-          },
-        ),
+      body: ListView.builder(
+        itemCount: transactions.length,
+        itemBuilder: (context, index) {
+          final t = transactions[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ShoppingCartItem(
+              date: t.date,
+              productName: t.productName,
+              quantity: t.quantity,
+              totalPrice: t.totalPrice,
+              status: t.status,
+              showReviewButton: false,
+              // bisa true jika ingin aktifkan tombol review
+              imageUrl:
+                  t.imageUrl ??
+                  '', // pastikan kamu tambahkan imageUrl di Transaction model
+            ),
+          );
+        },
+      ),
       bottomNavigationBar: MainBottomNav(
         currentIndex: 1, // karena ini halaman transaksi
         onTap: (index) {
@@ -46,7 +49,6 @@ class TransactionPage extends StatelessWidget {
           }
         },
       ),
-
     );
   }
 }
@@ -162,16 +164,16 @@ class ShoppingCartItem extends StatelessWidget {
                     ),
                     Text(
                       'Rp ${_formatPrice(totalPrice)}',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ],
                 ),
                 Spacer(),
                 if (showReviewButton)
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Review'),
-                  ),
+                  TextButton(onPressed: () {}, child: Text('Review')),
               ],
             ),
           ],
@@ -183,9 +185,7 @@ class ShoppingCartItem extends StatelessWidget {
   String _formatPrice(int price) {
     return price.toString().replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (Match m) => '${m[1]}.',
+      (Match m) => '${m[1]}.',
     );
   }
 }
-
-

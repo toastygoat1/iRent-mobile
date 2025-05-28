@@ -24,7 +24,6 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
-  bool _isExpanded = false;
   String _selectedStorage = '';
 
   @override

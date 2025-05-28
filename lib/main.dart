@@ -13,10 +13,7 @@ final items = iphones;
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => TransactionProvider()),
-        // Tambahkan provider lain di sini kalau ada
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => TransactionProvider())],
       child: const MyApp(),
     ),
   );
