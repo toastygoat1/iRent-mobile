@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:irent/pages/detail_page.dart';
+import 'package:irent/routes/main_screen.dart';
 import 'package:irent/viewmodels/sewa_viewmodels.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ void main() {
         // Tambahkan provider lain di sini kalau ada
       ],
       child: const MyApp(),
+
     ),
   );
 }
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      home: const MainScreen(),
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -49,7 +52,6 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
