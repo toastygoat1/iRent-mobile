@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
+import 'models/iphones.dart';
 
+final items = iphones;
 
 void main() {
   runApp(const MyApp());
@@ -79,7 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void _goToPopUpPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PopUpPage()),
+      MaterialPageRoute(builder: (context) => PopUpPage(iphone: items[0]),
+      ),
     );
   }
 

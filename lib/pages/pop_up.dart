@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import '../widgets/main_bottom_nav.dart';
+import '../models/iphones.dart';
+import 'package:intl/intl.dart';
 
 class PopUpPage extends StatefulWidget {
-  const PopUpPage({super.key});
+  final Iphone iphone;
+  const PopUpPage({super.key, required this.iphone});
 
   @override
   State<PopUpPage> createState() => _PopUpPageState();
 }
 
 class _PopUpPageState extends State<PopUpPage> {
-  final List<String> _storage = ['128GB', '256GB', '512GB'];
-  final String _imageUrl = 'https://images.tokopedia.net/img/cache/900/VqbcmM/2022/10/28/ba2f9780-c4bc-4f77-a5a4-ce06590eb17e.jpg';
-  final String _price = 'Rp100.000';
-
   int _counter = 1;
   int _selectedColor = 0;
 
   Future<void> _showBottomSheet(BuildContext context) async {
     int counter = _counter;
     int selectedColor = _selectedColor;
+    final storageList = widget.iphone.storagePrices.keys.toList();
     final result = await showModalBottomSheet<Map<String, int>>(
       context: context,
       isScrollControlled: true,
@@ -32,7 +31,9 @@ class _PopUpPageState extends State<PopUpPage> {
             padding: const EdgeInsets.all(16.0),
             child: StatefulBuilder(
               builder: (context, setModalState) {
-                // Intercept back/drag dismiss to return current state
+                final selectedStorage = storageList[selectedColor];
+                final price = widget.iphone.storagePrices[selectedStorage];
+                final formattedPrice = 'Rp ${NumberFormat('#,###', 'id_ID').format(price)}';
                 return WillPopScope(
                   onWillPop: () async {
                     Navigator.pop(context, {
@@ -51,7 +52,7 @@ class _PopUpPageState extends State<PopUpPage> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
-                                _imageUrl,
+                                widget.iphone.imageUrl,
                                 width: 256,
                                 height: 256,
                                 fit: BoxFit.cover,
@@ -59,7 +60,7 @@ class _PopUpPageState extends State<PopUpPage> {
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              _price,
+                              formattedPrice,
                               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -69,12 +70,12 @@ class _PopUpPageState extends State<PopUpPage> {
                       const Text('Ukuran Penyimpanan:', style: TextStyle(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Row(
-                        children: List.generate(_storage.length, (index) {
+                        children: List.generate(storageList.length, (index) {
                           final isSelected = selectedColor == index;
                           return Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: ChoiceChip(
-                              label: Text(_storage[index]),
+                              label: Text(storageList[index]),
                               selected: isSelected,
                               onSelected: (_) {
                                 setModalState(() {
@@ -166,18 +167,12 @@ class _PopUpPageState extends State<PopUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pop Up Example')),
+      appBar: AppBar(title: Text(widget.iphone.title)),
       body: Center(
         child: ElevatedButton(
           onPressed: () => _showBottomSheet(context),
           child: const Text('Show Pop Up'),
         ),
-      ),
-      bottomNavigationBar: MainBottomNav(
-        currentIndex: 0,
-        onTap: (index) {
-          // Handle navigation here
-        },
       ),
     );
   }
