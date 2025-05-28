@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
 import '../widgets/main_bottom_nav.dart';
 import '../models/iphones.dart';
-import 'pop_up.dart';
-import 'package:intl/intl.dart';
-import '../models/iphones.dart';
 import 'detail_page.dart';
-
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = iphones;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -26,7 +23,7 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey, width: 1),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal:4),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Row(
                   children: const [
                     Icon(Icons.search, color: Colors.grey),
@@ -56,14 +53,14 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const DetailPage(),
+                  builder: (context) => DetailPage(iphone: item),
                 ),
               );
             },
             child: ProductCard(
               imageUrl: item.imageUrl,
               title: item.title,
-              price: 'Rp ${NumberFormat('#,###', 'id_ID').format(item.storagePrices.values.first)}',
+              price: 'Rp${item.storagePrices.values.first}',
             ),
           )).toList(),
         ),

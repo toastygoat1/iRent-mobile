@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import '../models/iphones.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  final Iphone iphone;
+
+  const DetailPage({super.key, required this.iphone});
 
   @override
   Widget build(BuildContext context) {
-    return const ProductDetailPage();
+    return ProductDetailPage(iphone: iphone);
   }
 }
 
 class ProductDetailPage extends StatefulWidget {
-  const ProductDetailPage({super.key});
+  final Iphone iphone;
+
+  const ProductDetailPage({super.key, required this.iphone});
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -18,9 +23,20 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   bool _isExpanded = false;
+  String _selectedStorage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Set default storage ke yang pertama
+    _selectedStorage = widget.iphone.storagePrices.keys.first;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final iphone = widget.iphone;
+    final currentPrice = iphone.storagePrices[_selectedStorage] ?? 0;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -57,7 +73,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Color(0xFF0088CC),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Icon(
@@ -83,8 +99,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
-                      child: Image.asset(
-                        'assets/iphone_colors.png',
+                      child: Image.network(
+                        iphone.imageUrl,
                         height: 250,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) {
@@ -94,7 +110,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               Icon(Icons.phone_iphone, size: 80, color: Colors.grey[400]),
                               const SizedBox(height: 10),
                               Text(
-                                'iPhone 15 128GB\n256GB 512GB',
+                                '${iphone.title}\n${iphone.storagePrices.keys.join(' ')}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                               ),
@@ -122,23 +138,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             const SizedBox(height: 20),
 
             // Price Section
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rp 499.000',
-                    style: TextStyle(
+                    'Rp ${currentPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.red,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
-                    'iPhone 15 pro max RAM 32GB',
-                    style: TextStyle(
+                    '${iphone.title} $_selectedStorage',
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
                     ),
@@ -147,7 +163,55 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             ),
 
-            const SizedBox(height: 30),
+            // Storage Options
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Pilih Kapasitas',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Wrap(
+                    spacing: 10,
+                    children: iphone.storagePrices.keys.map((storage) {
+                      final isSelected = storage == _selectedStorage;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedStorage = storage;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected ? Color(0xFF0088CC) : Colors.white,
+                            border: Border.all(
+                              color: isSelected ? Color(0xFF0088CC) : Colors.grey[300]!,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            storage,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black87,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
 
             // Detail Produk Section
             Padding(
@@ -166,9 +230,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   const SizedBox(height: 20),
 
                   _buildDetailRow('Status Sinyal', 'Sinyal Aktif'),
-                  _buildDetailRow('Tahun Rilis', '2023'),
+                  _buildDetailRow('Tahun Rilis', _getYearFromModel(iphone.title)),
                   _buildDetailRow('Tipe Garansi', 'Garansi Distributor'),
-                  _buildDetailRow('Etalase', 'New FS', valueColor: Colors.green),
+                  _buildDetailRow('Etalase', 'New FS', valueColor: Color(0xFF0088CC)),
 
                   const SizedBox(height: 30),
 
@@ -184,8 +248,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                   Text(
                     _isExpanded
-                        ? 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\nLink Aksesoris iPhone : https://www.tokopedia.com/studioponsel/etalase/iphone-accessories\n\nReview pelanggan STUDIO PONSEL : https://www.tokopedia.com/studioponsel/review\n\nSekilas info tentang kami:\n1. Brand new - Original - Segel\n2. Garansi resmi dari distributor\n3. Sudah termasuk dus, charger, dan aksesoris standar\n4. Pengiriman aman dengan bubble wrap dan dus tambahan\n5. Tersedia berbagai pilihan warna\n6. Stock selalu ready dan update\n7. Pelayanan customer service 24/7\n8. Proses pengiriman cepat dan terpercaya'
-                        : 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.',
+                        ? 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\n${iphone.title} hadir dengan teknologi terdepan dan kualitas premium. Dilengkapi dengan berbagai pilihan kapasitas penyimpanan untuk memenuhi kebutuhan Anda.\n\nKeunggulan ${iphone.title}:\n1. Brand new - Original - Segel\n2. Garansi resmi dari distributor\n3. Sudah termasuk dus, charger, dan aksesoris standar\n4. Pengiriman aman dengan bubble wrap dan dus tambahan\n5. Tersedia berbagai pilihan kapasitas\n6. Stock selalu ready dan update\n7. Pelayanan customer service 24/7\n8. Proses pengiriman cepat dan terpercaya'
+                        : 'Seluruh produk yang kami jual merupakan 100% original, 100% baru, 100% garansi resmi dan kepuasan pelanggan adalah prioritas utama kami.\n\n${iphone.title} hadir dengan teknologi terdepan dan kualitas premium.',
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.black87,
@@ -204,7 +268,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       _isExpanded ? 'Baca Lebih Sedikit' : 'Baca Selengkapnya',
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Colors.green,
+                        color: Color(0xFF0088CC),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -242,14 +306,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Order berhasil ditambahkan!'),
-                    backgroundColor: Colors.green,
+                  SnackBar(
+                    content: Text('${iphone.title} $_selectedStorage berhasil ditambahkan ke keranjang!'),
+                    backgroundColor: Color(0xFF0088CC),
                   ),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                backgroundColor: Color(0xFF0088CC),
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -312,5 +376,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ],
       ),
     );
+  }
+
+  String _getYearFromModel(String title) {
+    if (title.contains('14')) return '2022';
+    if (title.contains('13')) return '2021';
+    if (title.contains('12')) return '2020';
+    if (title.contains('SE (2022)')) return '2022';
+    if (title.contains('11')) return '2019';
+    return '2023';
   }
 }
