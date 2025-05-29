@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   void _showChatMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Fitur pesan akan segera hadir!.'),
+        content: Text('Fitur pesan akan segera hadir!'),
         duration: Duration(seconds: 2),
       ),
     );

@@ -41,7 +41,7 @@ class TransactionPage extends StatelessWidget {
         currentIndex: 1, // karena ini halaman transaksi
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
           } else if (index == 1) {
             // sedang di halaman transaksi, tidak perlu pindah
           } else if (index == 2) {
