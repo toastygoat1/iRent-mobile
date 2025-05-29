@@ -29,7 +29,7 @@ class _PopUpPageState extends State<PopUpPage> {
         'Rp ${NumberFormat('#,###', 'id_ID').format(totalPrice.round())}';
 
     return FractionallySizedBox(
-      heightFactor: 0.70,
+      heightFactor: 0.75,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -120,7 +120,7 @@ class _PopUpPageState extends State<PopUpPage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel', style: TextStyle(fontSize: 16),),
+                    child: const Text('Cancel', style: TextStyle(fontSize: 16)),
                   ),
                   TextButton(
                     onPressed: () {

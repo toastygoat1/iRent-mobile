@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import '../widgets/product_card.dart';
-import '../widgets/main_bottom_nav.dart';
+import 'package:intl/intl.dart';
+
 import '../models/iphones.dart';
+import '../widgets/main_bottom_nav.dart';
+import '../widgets/product_card.dart';
 import 'detail_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  void _showChatMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Fitur pesan akan segera hadir!.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +48,14 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            const Icon(Icons.chat_bubble_outline_rounded, color: Colors.grey, size: 28),
+            GestureDetector(
+              onTap: () => _showChatMessage(context),
+              child: const Icon(
+                Icons.chat_bubble_outline_rounded,
+                color: Colors.grey,
+                size: 28,
+              ),
+            ),
           ],
         ),
       ),
@@ -48,21 +66,26 @@ class HomePage extends StatelessWidget {
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 0.75,
-          children: items.map((item) => GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailPage(iphone: item),
+          children: items
+              .map(
+                (item) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailPage(iphone: item),
+                      ),
+                    );
+                  },
+                  child: ProductCard(
+                    imageUrl: item.imageUrl,
+                    title: item.title,
+                    price:
+                        'Rp${NumberFormat('#,###', 'id_ID').format(item.storagePrices.values.first)}',
+                  ),
                 ),
-              );
-            },
-            child: ProductCard(
-              imageUrl: item.imageUrl,
-              title: item.title,
-              price: 'Rp${item.storagePrices.values.first}',
-            ),
-          )).toList(),
+              )
+              .toList(),
         ),
       ),
       bottomNavigationBar: MainBottomNav(
@@ -77,7 +100,6 @@ class HomePage extends StatelessWidget {
           }
         },
       ),
-
     );
   }
 }

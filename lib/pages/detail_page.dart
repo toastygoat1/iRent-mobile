@@ -76,7 +76,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: const Icon(
-                        Icons.message,
+                        Icons.chat_bubble_outline_rounded,
                         size: 24,
                         color: Colors.grey,
                       ),
@@ -93,9 +93,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                    ),
+                    decoration: BoxDecoration(color: Colors.grey[100]),
                     child: Center(
                       child: Image.network(
                         iphone.imageUrl,
@@ -149,11 +147,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Rp ${currentPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
+                    'Rp${currentPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.red,
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -203,12 +201,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
           ],
         ),
-        padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 15,
-          bottom: 0,
-        ),
+        padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
         child: SafeArea(
           child: SizedBox(
             height: 50,
@@ -256,45 +249,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         border: Border.all(color: Colors.grey[300]!, width: 1),
       ),
     );
-  }
-
-  Widget _buildDetailRow(String label, String value, {Color? valueColor}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: 14,
-                color: valueColor ?? Colors.black87,
-                fontWeight: valueColor != null
-                    ? FontWeight.w500
-                    : FontWeight.normal,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _getYearFromModel(String title) {
-    if (title.contains('14')) return '2022';
-    if (title.contains('13')) return '2021';
-    if (title.contains('12')) return '2020';
-    if (title.contains('SE (2022)')) return '2022';
-    if (title.contains('11')) return '2019';
-    return '2023';
   }
 
   List<Widget> _buildDescriptionWithBullets(String description) {
