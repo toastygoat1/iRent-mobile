@@ -112,7 +112,7 @@ class _PopUpPageState extends State<PopUpPage> {
                   fontSize: 18,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -120,7 +120,7 @@ class _PopUpPageState extends State<PopUpPage> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel'),
+                    child: const Text('Cancel', style: TextStyle(fontSize: 16),),
                   ),
                   TextButton(
                     onPressed: () {
@@ -136,7 +136,7 @@ class _PopUpPageState extends State<PopUpPage> {
                         ),
                       );
                     },
-                    child: const Text('OK'),
+                    child: const Text('OK', style: TextStyle(fontSize: 16)),
                   ),
                 ],
               ),

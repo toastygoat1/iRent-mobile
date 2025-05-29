@@ -75,14 +75,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF0088CC),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                       child: const Icon(
                         Icons.message,
-                        size: 20,
-                        color: Colors.white,
+                        size: 24,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
@@ -92,14 +88,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
             // Product Images
             Container(
-              height: 300,
+              height: 350,
               child: PageView(
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 0),
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
                       child: Image.network(
@@ -211,8 +206,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         padding: EdgeInsets.only(
           left: 16,
           right: 16,
-          top: 12,
-          bottom: MediaQuery.of(context).padding.bottom + 12,
+          top: 15,
+          bottom: 0,
         ),
         child: SafeArea(
           child: SizedBox(
@@ -232,7 +227,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF0088CC),
+                backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
