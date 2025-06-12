@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:irent/pages/detail_page.dart';
+import 'package:irent/pages/login_page.dart'; // Tambahkan ini
+import 'package:irent/pages/profile_page.dart';
 import 'package:irent/viewmodels/sewa_viewmodels.dart';
 import 'package:provider/provider.dart';
 
@@ -7,8 +9,6 @@ import 'models/iphones.dart';
 import 'pages/home_page.dart';
 import 'pages/pop_up.dart';
 import 'pages/transaksi_page.dart';
-import 'package:irent/pages/login_page.dart'; // Tambahkan ini
-
 
 final items = iphones;
 
@@ -33,10 +33,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      initialRoute: '/login', // Ubah initialRoute
+      initialRoute: '/login',
+      // Ubah initialRoute
       routes: {
         '/login': (context) => const LoginPage(),
         '/': (context) => const HomePage(),
+        '/profile': (context) => const ProfilePage(),
         '/transactions': (context) => const TransactionPage(),
       },
     );

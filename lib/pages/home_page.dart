@@ -89,14 +89,16 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: MainBottomNav(
-        currentIndex: 0,
+        currentIndex: 0, // Set this according to the current page
         onTap: (index) {
-          if (index == 0) {
-            // Sudah di Home, tidak perlu pindah
-          } else if (index == 1) {
-            Navigator.pushNamed(context, '/transactions');
-          } else if (index == 2) {
-            Navigator.pushNamed(context, '/profile');
+          if (index == 0 && ModalRoute.of(context)?.settings.name != '/home') {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (index == 1 &&
+              ModalRoute.of(context)?.settings.name != '/transactions') {
+            Navigator.pushReplacementNamed(context, '/transactions');
+          } else if (index == 2 &&
+              ModalRoute.of(context)?.settings.name != '/profile') {
+            Navigator.pushReplacementNamed(context, '/profile');
           }
         },
       ),
