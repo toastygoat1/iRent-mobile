@@ -112,10 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
         currentIndex: 2, // Assuming Profile is the 3rd item (index 2)
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(
-              context,
-              '/home',
-            ); // Or your home route
+            Navigator.pushReplacementNamed(context, '/'); // Or your home route
           } else if (index == 1) {
             Navigator.pushReplacementNamed(
               context,
