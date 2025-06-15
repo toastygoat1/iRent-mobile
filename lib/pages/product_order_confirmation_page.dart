@@ -96,8 +96,8 @@ class _ProductOrderConfirmationPageState extends State<ProductOrderConfirmationP
                   child: Image.network(
                     widget.product.imageUrl,
                     width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
+                    height: 120,
+                    fit: BoxFit.cover, // Changed from fitHeight to cover for better fit
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -116,43 +116,116 @@ class _ProductOrderConfirmationPageState extends State<ProductOrderConfirmationP
               ],
             ),
             const SizedBox(height: 16),
-            Text('Total Price: $formattedTotal', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text('Total Price:', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(
+              formattedTotal,
+              style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.blue), // Reverted font size
+            ),
             const SizedBox(height: 24),
-            const Text('Choose Start Date:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Center(
+              child: const Text('Choose when to rent:', style: TextStyle(fontWeight: FontWeight.bold)), // Centered
+            ),
             const SizedBox(height: 8),
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 0),
+                child: IntrinsicWidth(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (picked != null) {
+                        setState(() {
+                          _startDate = picked;
+                        });
+                      }
+                    },
+                    child: const Text('Choose date here'), // Button fits text
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (_startDate != null)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 2),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue.withOpacity(0.04),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Spaced between
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Rent start from :', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            DateFormat('dd MMMM yyyy').format(_startDate!),
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Rent end on :', style: TextStyle(fontWeight: FontWeight.w600)),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            DateFormat('dd MMMM yyyy').format(endDate!),
+                            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            const Spacer(),
             Row(
               children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
-                    );
-                    if (picked != null) {
-                      setState(() {
-                        _startDate = picked;
-                      });
-                    }
-                  },
-                  child: const Text('Select Start Date'),
+                Expanded(
+                  child: SizedBox(
+                    height: 48,
+                    child: OutlinedButton(
+                      onPressed: _isLoading ? null : () => Navigator.pop(context),
+                      child: const Text('Cancel Order'),
+                    ),
+                  ),
                 ),
-                const SizedBox(width: 16),
-                Text(_startDate != null ? DateFormat('dd MMM yyyy').format(_startDate!) : 'No date chosen'),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: _startDate != null && !_isLoading ? _submitOrder : null,
+                      child: _isLoading
+                          ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
+                          : const Text('Confirm Order'),
+                    ),
+                  ),
+                ),
               ],
-            ),
-            const SizedBox(height: 16),
-            if (_startDate != null)
-              Text('End Date: ${DateFormat('dd MMM yyyy').format(endDate!)}', style: const TextStyle(fontSize: 16)),
-            const Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: _startDate != null && !_isLoading ? _submitOrder : null,
-                child: _isLoading
-                    ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                    : const Text('Confirm Order'),
-              ),
             ),
           ],
         ),
