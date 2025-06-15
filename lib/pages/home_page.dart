@@ -26,38 +26,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Add this line
           children: [
-            Expanded(
-              child: Container(
-                height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey, width: 1),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Row(
-                  children: const [
-                    Icon(Icons.search, color: Colors.grey),
-                    SizedBox(width: 8),
-                    Text(
-                      'Search',
-                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                    ),
-                  ],
-                ),
+            const Text(
+              'iRent Mobile',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProductPage()),
-                );
-              },
-              child: const Text('Go to Products'),
-            ),
-            const SizedBox(width: 16),
             GestureDetector(
               onTap: () => _showChatMessage(context),
               child: const Icon(
@@ -71,31 +49,73 @@ class HomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          childAspectRatio: 0.75,
-          children: items
-              .map(
-                (item) => GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailPage(iphone: item),
-                      ),
-                    );
-                  },
-                  child: ProductCard(
-                    imageUrl: item.imageUrl,
-                    title: item.title,
-                    price:
-                        'Rp${NumberFormat('#,###', 'id_ID').format(item.storagePrices.values.first)}',
+        child: Column(
+          children: [
+            // Search bar (copied from AppBar)
+            Container(
+              height: 30,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey, width: 1),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Row(
+                children: const [
+                  Icon(Icons.search, color: Colors.grey),
+                  SizedBox(width: 8),
+                  Text(
+                    'Search',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
                   ),
-                ),
-              )
-              .toList(),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Go to Products button below search
+            Align(
+              alignment: Alignment.centerLeft,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProductPage()),
+                  );
+                },
+                child: const Text('Go to Products'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Expanded grid
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.75,
+                children: items
+                    .map(
+                      (item) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailPage(iphone: item),
+                            ),
+                          );
+                        },
+                        child: ProductCard(
+                          imageUrl: item.imageUrl,
+                          title: item.title,
+                          price:
+                              'Rp${NumberFormat('#,###', 'id_ID').format(item.storagePrices.values.first)}',
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: MainBottomNav(

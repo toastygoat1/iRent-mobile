@@ -31,22 +31,13 @@ class ProductCard extends StatelessWidget {
                 imageUrl,
                 height: 160,
                 width: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitHeight,
                 errorBuilder: (context, error, stackTrace) => Container(
                   height: 160,
                   width: double.infinity,
                   color: Colors.grey[300],
                   child: const Icon(Icons.broken_image, size: 48, color: Colors.grey),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-              child: Text(
-                imageUrl,
-                style: const TextStyle(fontSize: 10, color: Colors.blueGrey),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
             Padding(
