@@ -53,7 +53,7 @@ class _OrderListPageState extends State<OrderListPage> {
               final products = productSnapshot.data!;
               return ListView.separated(
                 itemCount: orders.length,
-                separatorBuilder: (context, index) => const Divider(),
+                separatorBuilder: (context, index) => const SizedBox.shrink(), // Remove horizontal line
                 itemBuilder: (context, index) {
                   final order = orders[index];
                   final product = products.firstWhere(
@@ -90,40 +90,81 @@ class _OrderListPageState extends State<OrderListPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: product.imageUrl.isNotEmpty
-                                ? Image.network(
-                                    product.imageUrl,
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Container(
-                                    width: 60,
-                                    height: 60,
-                                    color: Colors.grey[300],
-                                    child: const Icon(Icons.broken_image, size: 32, color: Colors.grey),
-                                  ),
-                          ),
-                          const SizedBox(width: 12),
+                          // Main info column (date above image+info)
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                // Start Date above
                                 Text(
-                                  product.name,
-                                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  order.startDate != null
+                                      ? (order.startDate is DateTime
+                                          ? (order.startDate as DateTime).toString().split(' ')[0]
+                                          : order.startDate.toString().split(' ')[0])
+                                      : '-',
+                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.blue),
                                 ),
-                                const SizedBox(height: 4),
-                                Text('Duration: ${order.duration} hari'),
-                                Text('Total: Rp${order.totalPrice.toStringAsFixed(0)}'),
-                                Text('Status: ${order.status}'),
-                                Text('Start: ${order.startDate}'),
+                                const SizedBox(height: 8),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Product Image
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: product.imageUrl.isNotEmpty
+                                          ? Image.network(
+                                              product.imageUrl,
+                                              width: 60,
+                                              height: 60,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Container(
+                                              width: 60,
+                                              height: 60,
+                                              color: Colors.grey[300],
+                                              child: const Icon(Icons.broken_image, size: 32, color: Colors.grey),
+                                            ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    // Product Info
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            product.name,
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text('Duration: ${order.duration} day(s)', style: const TextStyle(fontSize: 12)),
+                                          const SizedBox(height: 4),
+                                          Text('Total: Rp${order.totalPrice.toStringAsFixed(0)}', style: const TextStyle(fontSize: 12)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
+                          ),
+                          // Status
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Text(
+                                  'waiting',
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 12),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
