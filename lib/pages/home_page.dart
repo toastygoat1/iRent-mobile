@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:irent/pages/product_page.dart';
 
 import '../models/iphones.dart';
 import '../widgets/main_bottom_nav.dart';
@@ -46,6 +47,15 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProductPage()),
+                );
+              },
+              child: const Text('Go to Products'),
             ),
             const SizedBox(width: 16),
             GestureDetector(

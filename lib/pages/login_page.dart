@@ -31,7 +31,12 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _saveCustomerId(int customerId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('customer_id', customerId);
+  }
+
+  void _login() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -42,7 +47,30 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    Navigator.pushReplacementNamed(context, '/');
+    // Actual login logic: send request to API and get customer id from response
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:8000/api/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+      final responseData = jsonDecode(response.body);
+      if (response.statusCode == 200 &&
+          responseData['user'] != null &&
+          responseData['user']['id'] != null) {
+        int customerId = responseData['user']['id'];
+        await _saveCustomerId(customerId);
+        Navigator.pushReplacementNamed(context, '/');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(responseData['message'] ?? 'Login gagal.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login error: \\${e.toString()}')),
+      );
+    }
   }
 
   void _goToSignUp() {
@@ -93,6 +121,10 @@ class _LoginPageState extends State<LoginPage> {
               'userEmail',
               responseData['user']['email'] ?? 'N/A',
             );
+            // Save user id as customer_id for order confirmation
+            if (responseData['user']['id'] != null) {
+              await prefs.setInt('customer_id', responseData['user']['id']);
+            }
             // If your Laravel API returns a token (e.g., from Sanctum or JWT)
             if (responseData['token'] != null) {
               await prefs.setString('apiToken', responseData['token']);
@@ -305,3 +337,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

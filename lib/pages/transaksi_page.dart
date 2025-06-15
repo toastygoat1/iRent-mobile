@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../viewmodels/sewa_viewmodels.dart';
 import '../widgets/main_bottom_nav.dart';
+import 'order_list_page.dart';
 
 class TransactionPage extends StatelessWidget {
   const TransactionPage({super.key});
@@ -16,26 +17,49 @@ class TransactionPage extends StatelessWidget {
         title: const Text('Daftar Transaksi'),
         automaticallyImplyLeading: false,
       ),
-      body: ListView.builder(
-        itemCount: transactions.length,
-        itemBuilder: (context, index) {
-          final t = transactions[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ShoppingCartItem(
-              date: t.date,
-              productName: t.productName,
-              quantity: t.quantity,
-              totalPrice: t.totalPrice,
-              status: t.status,
-              showReviewButton: false,
-              // bisa true jika ingin aktifkan tombol review
-              imageUrl:
-                  t.imageUrl ??
-                  '', // pastikan kamu tambahkan imageUrl di Transaction model
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderListPage(),
+                    ),
+                  );
+                },
+                child: const Text('Go to Order List'),
+              ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: transactions.length,
+              itemBuilder: (context, index) {
+                final t = transactions[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: ShoppingCartItem(
+                    date: t.date,
+                    productName: t.productName,
+                    quantity: t.quantity,
+                    totalPrice: t.totalPrice,
+                    status: t.status,
+                    showReviewButton: false,
+                    // bisa true jika ingin aktifkan tombol review
+                    imageUrl:
+                        t.imageUrl ??
+                        '', // pastikan kamu tambahkan imageUrl di Transaction model
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: MainBottomNav(
         currentIndex: 1, // karena ini halaman transaksi
