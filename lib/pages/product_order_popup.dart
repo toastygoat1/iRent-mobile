@@ -31,13 +31,27 @@ class _ProductOrderPopupState extends State<ProductOrderPopup> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Add instruction text and max rent duration
+            const SizedBox(height: 8),
+            Text(
+              'Select how long you want to rent',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Max rent duration: $maxRentDay day(s)',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 widget.product.imageUrl,
                 width: 180,
                 height: 180,
-                fit: BoxFit.cover,
+                fit: BoxFit.fitHeight,
                 errorBuilder: (context, error, stackTrace) => Container(
                   width: 180,
                   height: 180,
@@ -62,6 +76,8 @@ class _ProductOrderPopupState extends State<ProductOrderPopup> {
                       : null,
                 ),
                 Text('$_days', style: const TextStyle(fontSize: 20)),
+                const SizedBox(width: 4),
+                const Text('day(s)', style: TextStyle(fontSize: 16)),
                 IconButton(
                   icon: const Icon(Icons.add_circle_outline),
                   onPressed: _days < maxRentDay
