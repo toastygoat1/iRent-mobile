@@ -94,26 +94,24 @@ class _LoginPageState extends State<LoginPage> {
           Uri.parse('$_baseUrl/login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'Accept': 'application/json', // Tell Laravel you expect JSON
+            'Accept': 'application/json',
           },
           body: jsonEncode(<String, String>{
             'email': _emailController.text.trim(),
             'password': _passwordController.text.trim(),
-            // Add device_name as required by your Laravel API
             'device_name': 'flutter_android_app',
-            // Or get a more dynamic device name
           }),
         );
 
         final responseData = jsonDecode(response.body);
 
         if (response.statusCode == 200) {
-          // Login successful
-          print('Login successful: $responseData');
-          // final user = responseData['user'];
-          // final token = responseData['token']; // If your API returns a token
-          final prefs = await SharedPreferences.getInstance();
-          if (responseData['user'] != null && responseData['user'] is Map) {
+          // Check if user is a customer
+          if (responseData['user'] != null &&
+              responseData['user']['role'] == 'customer') {  // Add role check
+            final prefs = await SharedPreferences.getInstance();
+
+            // Save user data
             await prefs.setString(
               'userName',
               responseData['user']['name'] ?? 'N/A',
@@ -122,67 +120,36 @@ class _LoginPageState extends State<LoginPage> {
               'userEmail',
               responseData['user']['email'] ?? 'N/A',
             );
-            // Save user id as customer_id for order confirmation
             if (responseData['user']['id'] != null) {
               await prefs.setInt('customer_id', responseData['user']['id']);
             }
-            // If your Laravel API returns a token (e.g., from Sanctum or JWT)
             if (responseData['token'] != null) {
               await prefs.setString('apiToken', responseData['token']);
-              print('Token stored: ${responseData['token']}');
             }
-          }
-          // TODO: Store token/user data securely (e.g., flutter_secure_storage or shared_preferences)
-          // Example with shared_preferences (add it to pubspec.yaml if you use it):
-          // SharedPreferences prefs = await SharedPreferences.getInstance();
-          // if (token != null) await prefs.setString('authToken', token);
-          // await prefs.setString('userData', jsonEncode(user));
 
-          // TODO: Navigate to Dashboard or Home Screen
-          if (mounted) {
-            // Check if the widget is still in the tree
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => ProductPage(),
-              ), // Replace with your actual dashboard screen
-            );
-          }
-        } else if (response.statusCode == 401) {
-          // Invalid credentials
-          setState(() {
-            _errorMessage =
-                responseData['message'] ?? 'Invalid email or password.';
-          });
-        } else if (response.statusCode == 422) {
-          // Validation errors from Laravel
-          final errors = responseData['errors'] as Map<String, dynamic>?;
-          String combinedErrorMessage =
-              responseData['message'] ?? "Validation failed.";
-          if (errors != null) {
-            // You can format this better, e.g., take the first error for each field
-            combinedErrorMessage += "\n";
-            errors.forEach((key, value) {
-              if (value is List && value.isNotEmpty) {
-                combinedErrorMessage += "${value.first}\n";
-              }
+            if (mounted) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const ProductPage()),
+              );
+            }
+          } else {
+            // User is not a customer
+            setState(() {
+              _errorMessage = 'Access denied. Only customers can login.';
             });
           }
+        } else if (response.statusCode == 401) {
           setState(() {
-            _errorMessage = combinedErrorMessage.trim();
+            _errorMessage = responseData['message'] ?? 'Invalid email or password.';
           });
         } else {
-          // Other server errors
           setState(() {
-            _errorMessage =
-                'Error: ${response.statusCode}. ${responseData['message'] ?? 'An unknown error occurred.'}';
+            _errorMessage = 'An error occurred. Please try again.';
           });
         }
       } catch (e) {
-        // Network error or other exceptions during the request
-        print('Login error: $e');
         setState(() {
-          _errorMessage =
-              'Failed to connect to the server. Please check your network connection or try again later.';
+          _errorMessage = 'Network error. Please check your connection.';
         });
       } finally {
         if (mounted) {
