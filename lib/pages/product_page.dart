@@ -10,7 +10,7 @@ import '../services/product_service.dart';
 import 'product_detail_page.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+  const ProductPage({Key? key}) : super(key: key);
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -19,11 +19,35 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   late Future<List<Product>> _futureProducts;
   final ProductService _productService = ProductService();
+  final TextEditingController _searchController = TextEditingController();
+  List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
-    _futureProducts = _productService.fetchProducts();
+    _futureProducts = _loadProducts();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<List<Product>> _loadProducts() async {
+    _allProducts = await _productService.fetchProducts();
+    _filteredProducts = _allProducts;
+    return _allProducts;
+  }
+
+  void _filterProducts(String query) {
+    setState(() {
+      _filteredProducts = _allProducts
+          .where((product) =>
+          product.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -65,73 +89,77 @@ class _ProductPageState extends State<ProductPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: \\${snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No products found.'));
           }
-          final items = snapshot.data!;
+
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                // Search bar like home page
+                // Search TextField
                 Container(
-                  height: 30,
+                  height: 40,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.search, color: Colors.grey),
-                      SizedBox(width: 8),
-                      Text(
-                        'Search',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: _filterProducts,
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.search, color: Colors.grey),
+                      hintText: 'Search products...',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Go to Home button below search
+                // Go to Home button
                 Align(
                   alignment: Alignment.centerLeft,
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomePage()),
+                        MaterialPageRoute(builder: (
+                            context) => const HomePage()),
                       );
                     },
                     child: const Text('Go to Home'),
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Expanded grid
+                // Grid with filtered products
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                     childAspectRatio: 0.75,
-                    children: items
+                    children: _filteredProducts
                         .map(
-                          (item) => ProductCard(
+                          (item) =>
+                          ProductCard(
                             imageUrl: item.imageUrl,
                             title: item.name,
-                            price: 'Rp${NumberFormat('#,###', 'id_ID').format(item.rentPrice)}',
+                            price: 'Rp${NumberFormat('#,###', 'id_ID').format(
+                                item.rentPrice)}',
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ProductDetailPage(product: item),
+                                  builder: (context) =>
+                                      ProductDetailPage(product: item),
                                 ),
                               );
                             },
                           ),
-                        )
+                    )
                         .toList(),
                   ),
                 ),
