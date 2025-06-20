@@ -38,6 +38,11 @@ class Order {
   final String status;
   final Customer customer;
   final Partner partner;
+  final String? pickupAddress;
+  final String? contactNumber;
+  final String? pickupTime;
+  final String? notes;
+  final String? returnInformation;
 
   Order({
     required this.id,
@@ -51,6 +56,11 @@ class Order {
     required this.status,
     required this.customer,
     required this.partner,
+    this.pickupAddress,
+    this.contactNumber,
+    this.pickupTime,
+    this.notes,
+    this.returnInformation,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
@@ -66,7 +76,11 @@ class Order {
       status: json['status'],
       customer: Customer.fromJson(json['customer']),
       partner: Partner.fromJson(json['partner']),
+      pickupAddress: json['pickup_address'] as String?,
+      contactNumber: json['contact_number'] as String?,
+      pickupTime: json['pickup_time'] as String?,
+      notes: json['notes'] as String?,
+      returnInformation: json['return_information'] as String?,
     );
   }
 }
-
