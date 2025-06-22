@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:irent/pages/login_page.dart'; // Import your LoginPage
 import 'package:irent/widgets/main_bottom_nav.dart'; // Assuming you have this for consistency
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:irent/pages/notification_page.dart'; // Import your NotificationPage
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -57,6 +58,19 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text('Profil Saya'),
         automaticallyImplyLeading:
             false, // Optional: remove back button if using bottom nav
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
