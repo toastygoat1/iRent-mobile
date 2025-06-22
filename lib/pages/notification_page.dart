@@ -33,7 +33,14 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: const Text(
+          'Notifications',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
+        ),
       ),
       body: FutureBuilder<List<AppNotification>>(
         future: _notificationsFuture,

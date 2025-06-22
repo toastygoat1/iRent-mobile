@@ -56,34 +56,32 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'iRent Mobile',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Fitur pesan akan segera hadir!'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
-              child: const Icon(
-                Icons.chat_bubble_outline_rounded,
-                color: Colors.grey,
-                size: 28,
-              ),
-            ),
-          ],
+        title: const Text(
+          'iRent Mobile',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Fitur pesan akan segera hadir!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.message,
+              color: Colors.blue,
+              size: 28,
+            ),
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: FutureBuilder<List<Product>>(
         future: _futureProducts,

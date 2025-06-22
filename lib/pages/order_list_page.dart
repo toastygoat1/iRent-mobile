@@ -274,10 +274,17 @@ class _OrderListPageState extends State<OrderListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order List'),
+        title: const Text(
+          'Order List',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications, color: Colors.blue),
             onPressed: () {
               Navigator.push(
                 context,

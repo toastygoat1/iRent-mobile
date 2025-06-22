@@ -99,6 +99,11 @@ class _ProductOrderPopupState extends State<ProductOrderPopup> {
                 ElevatedButton(
                   onPressed: () => _goToConfirmation(context),
                   child: const Text('OK'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),

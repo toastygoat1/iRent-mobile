@@ -11,7 +11,14 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+        title: const Text(
+          'Product Detail',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -71,27 +78,29 @@ class ProductDetailPage extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
         child: Row(
           children: [
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                height: 48,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Implement chat feature
-                  },
-                  icon: const Icon(Icons.message),
-                  label: const Text(''),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[200],
-                    foregroundColor: Colors.blue,
-                    elevation: 0,
+            // Make chat button smaller and perfectly round
+            SizedBox(
+              width: 48,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement chat feature
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.blue,
+                  elevation: 0,
+                  shape: const CircleBorder(
+                    side: BorderSide(color: Colors.blue),
                   ),
+                  padding: EdgeInsets.zero,
                 ),
+                child: const Icon(Icons.message, color: Colors.blue, size: 24),
               ),
             ),
             const SizedBox(width: 12),
+            // Order button adapts to fill remaining width
             Expanded(
-              flex: 3,
               child: SizedBox(
                 height: 48,
                 child: ElevatedButton(
@@ -107,6 +116,8 @@ class ProductDetailPage extends StatelessWidget {
                   },
                   child: const Text('Order'),
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                     textStyle: const TextStyle(fontSize: 18),
                   ),
                 ),

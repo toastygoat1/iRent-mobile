@@ -87,7 +87,16 @@ class _ProductOrderConfirmationPageState extends State<ProductOrderConfirmationP
     final endDate = _startDate != null ? _startDate!.add(Duration(days: widget.duration)) : null;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Order Confirmation')),
+      appBar: AppBar(
+        title: const Text(
+          'Order Confirmation',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -226,6 +235,11 @@ class _ProductOrderConfirmationPageState extends State<ProductOrderConfirmationP
                       child: _isLoading
                           ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
                           : const Text('Confirm Order'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        textStyle: const TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
                 ),

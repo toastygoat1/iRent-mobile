@@ -57,12 +57,19 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil Saya'),
+        title: const Text(
+          'My Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.blue,
+          ),
+        ),
         automaticallyImplyLeading:
             false, // Optional: remove back button if using bottom nav
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications, color: Colors.blue),
             onPressed: () {
               Navigator.push(
                 context,
@@ -111,8 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       label: const Text('Logout'),
                       onPressed: _handleLogout,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.red, // Or your theme's error color
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
                           vertical: 15,
