@@ -4,6 +4,8 @@ import 'package:irent/pages/login_page.dart'; // Import your LoginPage
 import 'package:irent/widgets/main_bottom_nav.dart'; // Assuming you have this for consistency
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:irent/pages/notification_page.dart'; // Import your NotificationPage
+import 'package:irent/pages/product_page.dart'; // Import ProductPage
+import 'package:irent/pages/order_list_page.dart'; // Import OrderListPage
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -123,15 +125,18 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
       bottomNavigationBar: MainBottomNav(
-        currentIndex: 2, // Assuming Profile is the 3rd item (index 2)
+        currentIndex: 2, // Profile is the 3rd item (index 2)
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/'); // Or your home route
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(
+            Navigator.pushReplacement(
               context,
-              '/transactions',
-            ); // Or your transactions route
+              MaterialPageRoute(builder: (context) => ProductPage()),
+            );
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => OrderListPage()),
+            );
           }
           // If index is 2, we are already on the Profile page
         },

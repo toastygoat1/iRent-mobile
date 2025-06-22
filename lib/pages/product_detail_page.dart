@@ -46,6 +46,11 @@ class ProductDetailPage extends StatelessWidget {
               product.partner.name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 4),
+            Text(
+              'Stock : ${product.stock}',
+              style: const TextStyle(fontSize: 15, color: Colors.black87),
+            ),
             const SizedBox(height: 8),
             Row(
               children: [

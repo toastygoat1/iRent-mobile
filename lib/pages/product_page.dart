@@ -5,9 +5,11 @@ import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
 import '../widgets/product_card.dart';
-import 'home_page.dart';
 import '../services/product_service.dart';
 import 'product_detail_page.dart';
+import 'order_list_page.dart';
+import 'profile_page.dart';
+import '../widgets/main_bottom_nav.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -98,39 +100,26 @@ class _ProductPageState extends State<ProductPage> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                // Search TextField
-                Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey, width: 1),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: _filterProducts,
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.search, color: Colors.grey),
-                      hintText: 'Search products...',
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: InputBorder.none,
+                // Search TextField (ultra compact)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                  child: SizedBox(
+                    height: 32,
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search products...',
+                        prefixIcon: Icon(Icons.search, size: 18),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: const BorderSide(width: 0.5),
+                        ),
+                        isDense: true,
+                      ),
+                      style: const TextStyle(fontSize: 13, height: 1.1),
+                      onChanged: _filterProducts,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                // Go to Home button
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (
-                            context) => const HomePage()),
-                      );
-                    },
-                    child: const Text('Go to Home'),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -166,6 +155,24 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
           );
+        },
+      ),
+      bottomNavigationBar: MainBottomNav(
+        currentIndex: 0, // Home is the 1st item (index 0)
+        onTap: (index) {
+          if (index == 0) {
+            // Already on ProductPage
+          } else if (index == 1) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => OrderListPage()),
+            );
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
         },
       ),
     );

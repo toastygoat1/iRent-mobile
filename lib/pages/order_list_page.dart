@@ -4,6 +4,10 @@ import '../models/product.dart' as product_model;
 import '../services/order_service.dart';
 import '../services/product_service.dart';
 import '../utils/customer_utils.dart';
+import '../widgets/main_bottom_nav.dart';
+import 'product_page.dart';
+import 'profile_page.dart';
+import 'notification_page.dart';
 
 class OrderListPage extends StatefulWidget {
   const OrderListPage({super.key});
@@ -269,7 +273,22 @@ class _OrderListPageState extends State<OrderListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Order List')),
+      appBar: AppBar(
+        title: const Text('Order List'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Order>>(
         future: _futureOrders,
         builder: (context, orderSnapshot) {
@@ -542,6 +561,24 @@ class _OrderListPageState extends State<OrderListPage> {
               );
             },
           );
+        },
+      ),
+      bottomNavigationBar: MainBottomNav(
+        currentIndex: 1, // Transaksi is the 2nd item (index 1)
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProductPage()),
+            );
+          } else if (index == 1) {
+            // Already on OrderListPage
+          } else if (index == 2) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          }
         },
       ),
     );

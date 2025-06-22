@@ -65,7 +65,11 @@ class _ProductOrderConfirmationPageState extends State<ProductOrderConfirmationP
       );
       setState(() { _isLoading = false; });
       if (response.statusCode == 201 || response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Order placed successfully!')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Order placed successfully!\nYou can check your order info on the Order page.'),
+          ),
+        );
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to place order: \\${response.body}')));

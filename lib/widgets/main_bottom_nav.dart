@@ -24,11 +24,11 @@ class MainBottomNav extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.receipt_long),
-          label: 'Transaksi',
+          label: 'Order',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Profil',
+          label: 'Profile',
         ),
       ],
     );
