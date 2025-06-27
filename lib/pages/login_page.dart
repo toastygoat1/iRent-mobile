@@ -278,24 +278,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
 
                 const SizedBox(height: 20),
-
-                // Belum punya akun? Sign up.
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Belum punya akun? '),
-                    GestureDetector(
-                      onTap: _goToSignUp,
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -304,4 +286,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

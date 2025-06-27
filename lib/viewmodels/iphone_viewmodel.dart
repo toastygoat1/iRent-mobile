@@ -1,1 +1,0 @@
-// isinya nanti untuk simpan list iPhone

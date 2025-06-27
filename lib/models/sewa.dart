@@ -1,11 +1,10 @@
-// isinya nanti data penyewaan (tanggal, durasi, status)
 class Transaction {
   final String productName;
   final int quantity;
   final int totalPrice;
   final String date;
   final String status;
-  final String imageUrl; // tambahkan ini
+  final String imageUrl;
 
   Transaction({
     required this.productName,

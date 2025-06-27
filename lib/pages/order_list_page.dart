@@ -259,7 +259,6 @@ class _OrderListPageState extends State<OrderListPage> {
     );
   }
 
-  // Helper function to format date range
   String _formatDateRange(String start, String end) {
     try {
       final startDate = DateTime.parse(start);

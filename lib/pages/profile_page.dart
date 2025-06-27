@@ -1,11 +1,10 @@
-// lib/pages/profile_page.dart (or your existing path)
 import 'package:flutter/material.dart';
-import 'package:irent/pages/login_page.dart'; // Import your LoginPage
-import 'package:irent/widgets/main_bottom_nav.dart'; // Assuming you have this for consistency
+import 'package:irent/pages/login_page.dart';
+import 'package:irent/widgets/main_bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:irent/pages/notification_page.dart'; // Import your NotificationPage
-import 'package:irent/pages/product_page.dart'; // Import ProductPage
-import 'package:irent/pages/order_list_page.dart'; // Import OrderListPage
+import 'package:irent/pages/notification_page.dart';
+import 'package:irent/pages/product_page.dart';
+import 'package:irent/pages/order_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String? _userName;
   String? _userEmail;
-  bool _isLoading = true; // To show a loader while fetching data
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -39,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // Clear stored user data and token
     await prefs.remove('userName');
     await prefs.remove('userEmail');
-    await prefs.remove('apiToken'); // Make sure to remove the token as well
+    await prefs.remove('apiToken');
 
     print('User logged out, session data cleared.');
 
@@ -48,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const LoginPage()),
         (Route<dynamic> route) =>
-            false, // This predicate always returns false, so all routes are removed
+            false,
       );
     }
   }
@@ -66,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         automaticallyImplyLeading:
-            false, // Optional: remove back button if using bottom nav
+            false,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications, color: Colors.blue),
@@ -95,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: <Widget>[
                     const CircleAvatar(
                       radius: 50,
-                      child: Icon(Icons.person, size: 50), // Placeholder icon
+                      child: Icon(Icons.person, size: 50),
                     ),
                     const SizedBox(height: 24),
                     Text(
@@ -132,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
       bottomNavigationBar: MainBottomNav(
-        currentIndex: 2, // Profile is the 3rd item (index 2)
+        currentIndex: 2,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacement(
@@ -145,7 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
               MaterialPageRoute(builder: (context) => OrderListPage()),
             );
           }
-          // If index is 2, we are already on the Profile page
         },
       ),
     );

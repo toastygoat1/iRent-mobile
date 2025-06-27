@@ -1,1 +1,0 @@
-// isinya data sementara (list iPhone dan sewa palsu).
